@@ -11,6 +11,7 @@ class Weather extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            error: false,
             temperature: null,
             description: null,
             icon: null
@@ -30,8 +31,8 @@ class Weather extends React.Component {
             }
             return response.json();
         })
-        .then(json => this.displayWeather(json).bind(this))
-        .catch(error => console.error('There was a problem: '  + error));
+        .then(json => this.displayWeather(json))
+        .catch(error => {console.error('There was a problem: '  + error); this.setState({error: true})});
     }
 
     /**
@@ -49,13 +50,20 @@ class Weather extends React.Component {
      * This render the weather component
      */
     render() {
-        return (
-            <section>
-                <div>{this.state.temperature} &#8451; {this.state.description}</div>
-                <img src={"http://openweathermap.org/img/wn/" + this.state.icon + "@2x.png"}/>
-                <button type="button" onClick={() => this.componentDidMount()}>Refresh</button>
-            </section> 
-        );
+        if (this.state.error == true) {
+            return (
+                <div>Weather is not available at this time.</div>
+            );
+        }
+        else {
+            return (
+                <section>
+                    <div>{this.state.temperature} &#8451; {this.state.description}</div>
+                    <img src={"http://openweathermap.org/img/wn/" + this.state.icon + "@2x.png"}/>
+                    <button type="button" onClick={() => this.componentDidMount()}>Refresh</button>
+                </section> 
+            );
+        }
     }
 }
 
