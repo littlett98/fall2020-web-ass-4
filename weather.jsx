@@ -30,10 +30,14 @@ class Timer extends React.Component {
 class Weather extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {weather: null};
+        this.state = {
+            temperature: null,
+            description: null,
+            icon: null
+        };
     }
     componentDidMount() {
-        fetch('http://api.openweathermap.org/data/2.5/weather?q=' + this.props.city + '&appid=95c301e15b985b3e0264565d254ccf49')
+        fetch('http://api.openweathermap.org/data/2.5/weather?q=' + this.props.city + '&appid=95c301e15b985b3e0264565d254ccf49&units=metric')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Status code: ' + response.status)
@@ -45,13 +49,20 @@ class Weather extends React.Component {
     }
 
     displayWeather(json) {
-        this.setState({weather: json.weather[0].description});
-        console.log(json.weather[0]);
+        this.setState({
+            temperature: json.main.temp,
+            description: json.weather[0].description,
+            icon: json.weather[0].icon
+        });
+        console.log(json);
     }
 
     render() {
         return (
-            <div>{this.state.weather}</div>
+            <section>
+                <div>{this.state.temperature} &#8451; {this.state.description}</div>
+                <div>{this.state.icon}</div>
+            </section> 
         );
     }
 }
