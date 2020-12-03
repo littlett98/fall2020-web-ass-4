@@ -61,7 +61,7 @@ class Weather extends React.Component {
         return (
             <section>
                 <div>{this.state.temperature} &#8451; {this.state.description}</div>
-                <div>{this.state.icon}</div>
+                <img src={"http://openweathermap.org/img/wn/" + this.state.icon + "@2x.png"}/>
             </section> 
         );
     }
